@@ -1,0 +1,145 @@
+/* REGISTER PAGE STYLES */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background-image: url('img/register_image.jpg');
+  background-size: 100% 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-box {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.auth-box h2 {
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+.auth-box P {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.field-title {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.password-container input {
+  margin-bottom: 0;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.auth-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #43cea2;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.auth-box button:hover {
+  background-color: #2ab68b;
+}
+
+.switch-link {
+  margin-top: 15px;
+}
+
+.switch-link a {
+  color: #185a9d;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Success message styling */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Styles for disabled button during form submission */
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Animation for error message highlight effect */
+@keyframes highlight {
+  0%, 100% {
+    background-color: #f8d7da;
+  }
+  50% {
+    background-color: #f5c6cb;
+  }
+}

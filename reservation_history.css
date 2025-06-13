@@ -1,0 +1,279 @@
+/* Reservation History Styles */
+
+.history-header {
+    background: linear-gradient(135deg, #4a6fdc, #6d5dfc);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.history-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.history-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.history-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.filters-container {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.filters-container h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #f5f7fa;
+    color: #555;
+    border-radius: 25px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.filter-btn i {
+    opacity: 0.7;
+}
+
+.filter-btn:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background-color: #4a6fdc;
+    color: white;
+    border-color: #3a5dc0;
+}
+
+.filter-btn.active i {
+    opacity: 1;
+}
+
+.no-history {
+    text-align: center;
+    padding: 3rem 0;
+    color: #666;
+}
+
+.no-history i {
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.no-history p {
+    margin-bottom: 1.5rem;
+}
+
+.make-reservation-btn {
+    display: inline-block;
+    background-color: #4a6fdc;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.make-reservation-btn:hover {
+    background-color: #3a5dc0;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(74, 111, 220, 0.2);
+}
+
+.reservations-table-wrapper {
+    overflow-x: auto;
+}
+
+.reservations-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.reservations-table th,
+.reservations-table td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.reservations-table th {
+    background-color: #f1f3f8;
+    color: #333;
+    font-weight: 600;
+}
+
+.reservations-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.reservations-table tbody tr:hover {
+    background-color: #f9fafc;
+}
+
+.room-name {
+    display: flex;
+    align-items: center;
+}
+
+.room-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #f1f3f8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: #4a6fdc;
+}
+
+.status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status.ongoing {
+    background-color: rgba(74, 111, 220, 0.1);
+    color: #4a6fdc;
+}
+
+.status.completed {
+    background-color: rgba(32, 191, 107, 0.1);
+    color: #20bf6b;
+}
+
+.status.cancelled {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.actions-cell {
+    width: 150px;
+}
+
+.cancel-btn, .review-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.cancel-btn:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+}
+
+.review-btn {
+    background-color: rgba(255, 159, 0, 0.1);
+    color: #ff9f00;
+}
+
+.review-btn:hover {
+    background-color: rgba(255, 159, 0, 0.2);
+}
+
+.no-cancel-note, .cancelled-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.history-notes {
+    color: #666;
+    font-size: 0.9rem;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.history-notes p {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.history-notes i {
+    color: #4a6fdc;
+}
+
+@media (max-width: 768px) {
+    .filter-buttons {
+        flex-direction: column;
+    }
+    
+    .filter-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .reservations-table th, 
+    .reservations-table td {
+        padding: 1rem 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .history-header {
+        padding: 1.5rem;
+    }
+    
+    .history-content {
+        padding: 1.5rem 1rem;
+    }
+    
+    .reservations-table th:nth-child(5),
+    .reservations-table td:nth-child(5) {
+        display: none;
+    }
+}
