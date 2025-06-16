@@ -105,33 +105,27 @@ if ($result && $result->num_rows > 0) {
                         </a>
                     </li>
                     <li>
-                        <a href="admin_book_management.php">
-                            <span class="icon"><i class="fas fa-book"></i></span>
-                            <span class="text">Books</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="admin_user_management.php">
                             <span class="icon"><i class="fas fa-users"></i></span>
-                            <span class="text">Users</span>
+                            <span class="text">User Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_borrowing_management.php">
+                        <a href="admin_book_management.php">
+                            <span class="icon"><i class="fas fa-book"></i></span>
+                            <span class="text">Book Management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin_request.php">
                             <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-                            <span class="text">Borrowing</span>
+                            <span class="text">Book Reservation</span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="admin_room_management.php">
                             <span class="icon"><i class="fas fa-door-open"></i></span>
-                            <span class="text">Rooms</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_settings.php">
-                            <span class="icon"><i class="fas fa-cog"></i></span>
-                            <span class="text">Settings</span>
+                            <span class="text">Room Management</span>
                         </a>
                     </li>
                 </ul>
@@ -139,7 +133,6 @@ if ($result && $result->num_rows > 0) {
             <div class="sidebar-footer">
                 <a href="logout.php" class="logout-btn">
                     <span class="icon logout-icon">
-                        <i class="fas fa-sign-out-alt"></i>
                     </span>
                     Logout
                 </a>
@@ -149,12 +142,8 @@ if ($result && $result->num_rows > 0) {
         <!-- Main Content -->
         <main class="main-content">
             <header class="main-header">
-                <div class="header-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search rooms or bookings..." />
-                </div>
                 <div class="header-user">
-                    <span class="user-greeting">Welcome, <?php echo htmlspecialchars($admin_username); ?></span>
+                    <span class="username"><?php echo htmlspecialchars($admin_username); ?></span>
                     <div class="user-avatar">
                         <i class="fas fa-user-circle"></i>
                     </div>

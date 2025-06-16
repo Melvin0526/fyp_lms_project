@@ -33,6 +33,9 @@ $conn->close();
     <title>Admin Dashboard | Library System</title>
     <link rel="stylesheet" href="admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="admin-container">
@@ -40,47 +43,45 @@ $conn->close();
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h2>Library Admin</h2>
-            </div>            <nav class="sidebar-nav">
+            </div>            
+            <nav class="sidebar-nav">
                 <ul>
                     <li class="active">
                         <a href="admin_homepage.php">
-                            <span class="icon dashboard-icon"></span>
-                            Dashboard
+                            <span class="icon"><i class="fas fa-home"></i></span>
+                            <span class="text">Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="admin_user_management.php">
-                            <span class="icon users-icon"></span>
-                            User Management
+                            <span class="icon"><i class="fas fa-users"></i></span>
+                            <span class="text">User Management</span>
                         </a>
                     </li>
                     <li>
                         <a href="admin_book_management.php">
-                            <span class="icon books-icon"></span>
-                            Book Management
+                            <span class="icon"><i class="fas fa-book"></i></span>
+                            <span class="text">Book Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_requests.php">
-                            <span class="icon borrowing-icon"></span>
-                            Requests
+                        <a href="admin_request.php">
+                            <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                            <span class="text">Book Reservation</span>
                         </a>
                     </li>
                     <li>
                         <a href="admin_room_management.php">
-                            <span class="icon reports-icon"></span>
-                            Room Management
+                            <span class="icon"><i class="fas fa-door-open"></i></span>
+                            <span class="text">Room Management</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
-                            <span class="icon settings-icon"></span>
-                            System Settings
-                        </a>
-                    </li>
-                </ul>            </nav>            <div class="sidebar-footer">
+                </ul>
+            </nav>            
+            <div class="sidebar-footer">
                 <a href="logout.php" class="logout-btn">
-                    <span class="icon logout-icon"></span>
+                    <span class="icon logout-icon">
+                    </span>
                     Logout
                 </a>
             </div>

@@ -37,9 +37,13 @@ if (isset($conn)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management | Library Admin</title>    <link rel="stylesheet" href="admin.css">
+    <title>User Management | Library Admin</title>    
+    <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="admin_user_management.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="admin-container">
@@ -52,45 +56,40 @@ if (isset($conn)) {
                 <ul>
                     <li>
                         <a href="admin_homepage.php">
-                            <span class="icon dashboard-icon"></span>
-                            Dashboard
+                            <span class="icon"><i class="fas fa-home"></i></span>
+                            <span class="text">Dashboard</span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="admin_user_management.php">
-                            <span class="icon users-icon"></span>
-                            User Management
+                            <span class="icon"><i class="fas fa-users"></i></span>
+                            <span class="text">User Management</span>
                         </a>
                     </li>
                     <li>
                         <a href="admin_book_management.php">
-                            <span class="icon books-icon"></span>
-                            Book Management
+                            <span class="icon"><i class="fas fa-book"></i></span>
+                            <span class="text">Book Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_requests.php">
-                            <span class="icon borrowing-icon"></span>
-                            Requests
+                        <a href="admin_request.php">
+                            <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                            <span class="text">Book Reservation</span>
                         </a>
                     </li>
                     <li>
                         <a href="admin_room_management.php">
-                            <span class="icon reports-icon"></span>
-                            Room Management
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="icon settings-icon"></span>
-                            System Settings
+                            <span class="icon"><i class="fas fa-door-open"></i></span>
+                            <span class="text">Room Management</span>
                         </a>
                     </li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
                 <a href="logout.php" class="logout-btn">
-                    <span class="icon logout-icon"></span>
+                    <span class="icon logout-icon">
+                    </span>
                     Logout
                 </a>
             </div>
@@ -99,18 +98,10 @@ if (isset($conn)) {
         <!-- Main Content -->
         <main class="main-content">
             <header class="main-header">
-                <div class="header-search">
-                    <span class="search-icon"></span>
-                    <input type="text" placeholder="Search users..." />
-                </div>
                 <div class="header-user">
-                    <span class="notification-bell">
-                        <span class="notification-count">3</span>
-                    </span>
-                    <div class="user-profile">
-                        <span class="user-name"><?php echo htmlspecialchars($admin_username); ?></span>
-                        <span class="user-role">Administrator</span>
-                        <a href="homepage.php" class="switch-view">Switch to User View</a>
+                    <span class="username"><?php echo htmlspecialchars($admin_username); ?></span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
                     </div>
                 </div>
             </header>

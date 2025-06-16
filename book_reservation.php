@@ -8,9 +8,26 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Include database connection to get categories
+include 'config.php';
+
 // Get user information from session
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
+
+// Fetch categories for filter dropdown
+$categories = [];
+$categoryQuery = "SELECT * FROM categories WHERE status = 'active' ORDER BY name ASC";
+$categoryResult = $conn->query($categoryQuery);
+
+if ($categoryResult && $categoryResult->num_rows > 0) {
+    while ($row = $categoryResult->fetch_assoc()) {
+        $categories[] = $row;
+    }
+}
+
+// Close the database connection
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +39,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="book_reservation.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -53,38 +71,91 @@ $email = $_SESSION['email'];
             </div>
         </header>
 
-        <main>            <section class="page-header">
+        <main>
+            <section class="reservation-header">
                 <h2>Book Reservation</h2>
-                <p>Search, reserve, and manage your book pickups</p>
-                
-                <div class="search-container">
+                <p>Search for books, reserve them, and pick them up at your convenience. Each reservation is valid for 3 days.</p>
+                <p class="reservation-rules"><i class="fas fa-info-circle"></i> Note: You can have up to 5 active book reservations at a time.</p>
+                <p class="view-reservations-note">You can view and manage your reservations in your <a href="borrow_history.php">Borrow History</a>.</p>
+            </section>
+
+            <div class="form-container">
+                <div class="search-section">
+                    <div class="search-header">
+                        <h3><i class="fas fa-search"></i> Search Books</h3>
+                        <button id="clear-filters" class="clear-filters-btn">Clear All Filters</button>
+                    </div>
                     <div class="search-box">
                         <input type="text" id="book-search" placeholder="Search by title, author, or ISBN...">
-                        <button id="search-btn" class="search-btn">Search</button>
+                        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
                     </div>
-                    <div class="filter-options">
-                        <select id="category-filter">
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label class="filter-label" for="category-filter">Category</label>
+                        <select id="category-filter" class="filter-select">
                             <option value="">All Categories</option>
-                            <option value="fiction">Fiction</option>
-                            <option value="non-fiction">Non-Fiction</option>
-                            <option value="sci-fi">Science Fiction</option>
-                            <option value="mystery">Mystery</option>
-                            <option value="biography">Biography</option>
-                            <option value="history">History</option>
-                            <option value="business">Business</option>
-                            <option value="science">Science</option>
+                            <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category['category_id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+                            <?php endforeach; ?>
                         </select>
-                        <select id="availability-filter">
-                            <option value="">All Availability</option>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label" for="availability-filter">Availability</label>
+                        <select id="availability-filter" class="filter-select">
+                            <option value="">All Status</option>
                             <option value="available">Available Now</option>
                             <option value="reserved">Reserved</option>
                             <option value="borrowed">Borrowed</option>
                         </select>
                     </div>
                 </div>
-            </section>
+            </div>
 
+            <!-- Book Grid Section -->
+            <section class="book-section">
+                <div id="loading" class="loading-container">
+                    <div class="loading-spinner"></div>
+                </div>
+                <div id="books-grid" class="book-grid">
+                    <!-- Books will be loaded here dynamically -->
+                </div>
+                <div id="no-books" class="no-books-message" style="display:none;">
+                    <i class="fas fa-book-open"></i>
+                    <p>No books found matching your criteria.</p>
+                </div>
+                
+                <!-- Pagination -->
+                <div id="pagination" class="pagination">
+                    <!-- Pagination buttons will be added here -->
+                </div>
+            </section>
         </main>
+    </div>
+
+    <!-- Book Detail Modal -->
+    <div id="book-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="book-detail-content">
+                <!-- Book details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Confirm Reservation</h3>
+            <p id="confirmation-message">Are you sure you want to reserve this book?</p>
+            <div class="modal-buttons">
+                <button id="cancel-reservation" class="cancel-modal-btn">Cancel</button>
+                <button id="confirm-reservation" class="confirm-btn">Confirm Reservation</button>
+            </div>
+        </div>
     </div>
 
     <script src="book_reservation.js"></script>
