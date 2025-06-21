@@ -31,18 +31,21 @@
       
       // Display error messages
       if(isset($_GET['error'])) {
-        echo '<div class="error-message">';
-        switch($_GET['error']) {
-          case 'invalid_credentials':
-            echo 'Invalid password. Please try again.';
-            break;
-          case 'user_not_found':
-            echo 'Username or email not found. Please check your credentials or register.';
-            break;
-          default:
-            echo 'An error occurred during login. Please try again.';
-        }
-        echo '</div>';
+          echo '<div class="error-message">';
+          switch($_GET['error']) {
+              case 'invalid_credentials':
+                  echo 'Invalid password. Please try again.';
+                  break;
+              case 'user_not_found':
+                  echo 'Username or email not found. Please check your credentials or register.';
+                  break;
+              case 'account_suspended':
+                  echo '<strong>Account suspended</strong>. Please contact the administrator for assistance.';
+                  break;
+              default:
+                  echo 'An error occurred during login. Please try again.';
+          }
+          echo '</div>';
       }
       ?>
       

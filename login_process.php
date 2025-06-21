@@ -18,7 +18,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         // User found
         $user = $result->fetch_assoc();
-          // Verify password
+        
+        // Check if user is suspended
+        if ($user['status'] === 'suspended') {
+            // Redirect with suspended account error
+            header("Location: login.php?error=account_suspended");
+            exit();
+        }
+        
+        // Verify password
         if (password_verify($password, $user['password'])) {
             // Password is correct, start a session
             session_start();

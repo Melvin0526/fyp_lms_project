@@ -1,0 +1,270 @@
+/* Physical Book Checkout Styles */
+
+.checkout-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.checkout-section h2 {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark-color);
+    font-size: 1.3rem;
+}
+
+.checkout-section h2 i {
+    color: var(--primary-color);
+}
+
+.checkout-section > p {
+    color: var(--grey-color);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* Form styling */
+.checkout-form {
+    background-color: var(--light-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.form-row {
+    margin-bottom: 1.2rem;
+    position: relative;
+}
+
+.form-row:last-child {
+    margin-bottom: 0;
+}
+
+.form-row label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+    font-size: 0.95rem;
+}
+
+.form-row input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--light-grey);
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.form-row input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.required {
+    color: var(--danger-color);
+    margin-left: 3px;
+}
+
+/* Borrowing period info */
+.borrowing-period {
+    background-color: rgba(67, 97, 238, 0.05);
+    border-radius: 5px;
+    padding: 0.8rem 1rem;
+    border-left: 3px solid var(--primary-color);
+}
+
+.period-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--dark-color);
+}
+
+.period-info i {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+/* Checkout button */
+.checkout-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    padding: 0.8rem 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkout-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.checkout-btn i {
+    font-size: 0.9rem;
+}
+
+/* Status messages */
+.checkout-message {
+    margin-top: 1.2rem;
+    padding: 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.checkout-message.success {
+    background-color: rgba(9, 188, 138, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(9, 188, 138, 0.2);
+}
+
+.checkout-message.success::before {
+    content: '\f058';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+.checkout-message.error {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(230, 57, 70, 0.2);
+}
+
+.checkout-message.error::before {
+    content: '\f057';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Guidelines section */
+.checkout-info {
+    margin-top: 1.5rem;
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.checkout-info h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--dark-color);
+}
+
+.checkout-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.checkout-info li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.8rem;
+    color: var(--grey-color);
+    font-size: 0.9rem;
+}
+
+.checkout-info li:last-child {
+    margin-bottom: 0;
+}
+
+.checkout-info li i {
+    color: var(--success-color);
+    font-size: 0.9rem;
+    min-width: 16px;
+}
+
+/* Autocomplete suggestions */
+.autocomplete-suggestions {
+    position: absolute;
+    z-index: 1000;
+    background-color: var(--white);
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--light-grey);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.autocomplete-suggestion {
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(222, 226, 230, 0.5);
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.autocomplete-suggestion:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-suggestion:hover {
+    background-color: #f0f7ff;
+}
+
+.unavailable {
+    color: var(--danger-color);
+    font-style: italic;
+}
+
+/* Fade out animation for notification messages */
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+.fadeOut {
+    animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+/* Responsive styles - inheriting from main admin.css but with specific adjustments */
+@media screen and (max-width: 768px) {
+    .checkout-form {
+        padding: 1.2rem;
+    }
+    
+    .checkout-info {
+        padding: 1.2rem;
+    }
+    
+    .checkout-section h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .checkout-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

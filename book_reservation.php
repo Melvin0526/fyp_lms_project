@@ -61,10 +61,6 @@ $conn->close();
                     <span><?php echo htmlspecialchars($username); ?></span>
                     <div class="dropdown-content">
                         <a href="profile.php">My Profile</a>
-                        <a href="change_password.php">Change Password</a>
-                        <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-                        <a href="admin_homepage.php">Admin Dashboard</a>
-                        <?php endif; ?>
                         <a href="logout.php">Logout</a>
                     </div>
                 </div>
@@ -75,7 +71,7 @@ $conn->close();
             <section class="reservation-header">
                 <h2>Book Reservation</h2>
                 <p>Search for books, reserve them, and pick them up at your convenience. Each reservation is valid for 3 days.</p>
-                <p class="reservation-rules"><i class="fas fa-info-circle"></i> Note: You can have up to 5 active book reservations at a time.</p>
+                <p class="reservation-rules"><i class="fas fa-info-circle"></i> Note: You can have up to 3 active book reservations at a time.</p>
                 <p class="view-reservations-note">You can view and manage your reservations in your <a href="borrow_history.php">Borrow History</a>.</p>
             </section>
 

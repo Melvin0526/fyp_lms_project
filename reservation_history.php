@@ -81,9 +81,6 @@ if ($filter === 'all') {
                     <span><?php echo htmlspecialchars($username); ?></span>                    
                     <div class="dropdown-content">
                         <a href="profile.php">My Profile</a>
-                        <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-                        <a href="admin_homepage.php">Admin Dashboard</a>
-                        <?php endif; ?>
                         <a href="logout.php">Logout</a>
                     </div>
                 </div>
@@ -157,11 +154,24 @@ if ($filter === 'all') {
                                         </td>
                                         <td class="actions-cell">
                                             <?php if ($reservation['status'] === 'confirmed'): ?>
-                                                <a href="?cancel=<?php echo $reservation['reservation_id']; ?>" 
-                                                   class="cancel-btn" 
-                                                   onclick="return confirm('Are you sure you want to cancel this reservation?')">
-                                                    <i class="fas fa-times"></i> Cancel
-                                                </a>
+                                                <?php 
+                                                    // Check if the timeslot has already started
+                                                    $now = new DateTime('now', new DateTimeZone('Asia/Kuala_Lumpur'));
+                                                    $reservationDateTime = new DateTime($reservation['date'] . ' ' . $reservation['start_time'], new DateTimeZone('Asia/Kuala_Lumpur'));
+                                                    $timeslotStarted = ($now >= $reservationDateTime);
+                                                    
+                                                    if($timeslotStarted): 
+                                                ?>
+                                                    <span class="no-cancel-note">
+                                                        <i class="fas fa-clock"></i> Started
+                                                    </span>
+                                                <?php else: ?>
+                                                    <a href="?cancel=<?php echo $reservation['reservation_id']; ?>" 
+                                                       class="cancel-btn" 
+                                                       onclick="return confirm('Are you sure you want to cancel this reservation?')">
+                                                        <i class="fas fa-times"></i> Cancel
+                                                    </a>
+                                                <?php endif; ?>
                                             <?php elseif ($reservation['status'] === 'completed'): ?>
                                                 <span class="no-cancel-note">
                                                     <i class="fas fa-check-circle"></i> Completed
@@ -191,7 +201,6 @@ if ($filter === 'all') {
         </footer>
     </div>
 
-    <script src="homepage.js"></script>
     <script src="reservation_history.js"></script>
 </body>
 </html>

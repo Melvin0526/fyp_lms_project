@@ -19,13 +19,111 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownContent.style.display = isDisplayed ? 'none' : 'block';
     });
     
-    // Borrow button functionality
-    const borrowButtons = document.querySelectorAll('.borrow-btn');
+    // User preferences functionality
+    const preferenceCheckboxes = document.querySelectorAll('.preference-checkbox');
+    const savePreferencesBtn = document.getElementById('save-preferences');
+    const selectedCountElem = document.getElementById('selected-count');
+    const preferencesMessage = document.getElementById('preferences-message');
+    const maxSelections = 3;
     
-    borrowButtons.forEach(button => {
+    // Initialize selected count
+    let selectedCount = document.querySelectorAll('.preference-checkbox:checked').length;
+    selectedCountElem.textContent = selectedCount;
+    
+    // Handle checkbox changes
+    preferenceCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedBoxes = document.querySelectorAll('.preference-checkbox:checked');
+            
+            if (checkedBoxes.length > maxSelections) {
+                this.checked = false;
+                showMessage('You can only select up to 3 categories.', 'error');
+                return;
+            }
+            
+            selectedCount = checkedBoxes.length;
+            selectedCountElem.textContent = selectedCount;
+        });
+    });
+    
+    // Save preferences
+    if (savePreferencesBtn) {
+        savePreferencesBtn.addEventListener('click', function() {
+            const checkedBoxes = document.querySelectorAll('.preference-checkbox:checked');
+            const selectedCategories = Array.from(checkedBoxes).map(box => parseInt(box.value));
+            
+            fetch('save_preferences.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    categories: selectedCategories
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('Your preferences have been saved successfully!', 'success');
+                } else {
+                    showMessage('Error: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('An error occurred while saving your preferences.', 'error');
+            });
+        });
+    }
+    
+    function showMessage(message, type) {
+        preferencesMessage.textContent = message;
+        preferencesMessage.className = 'preferences-message ' + type;
+        preferencesMessage.style.display = 'block';
+        
+        setTimeout(() => {
+            preferencesMessage.style.opacity = '0';
+            setTimeout(() => {
+                preferencesMessage.style.display = 'none';
+                preferencesMessage.style.opacity = '1';
+            }, 500);
+        }, 3000);
+    }
+    
+    // Reserve button functionality
+    const reserveButtons = document.querySelectorAll('.reserve-btn');
+    
+    reserveButtons.forEach(button => {
         button.addEventListener('click', function() {
+            const bookId = this.dataset.bookId;
             const bookTitle = this.parentElement.querySelector('h3').textContent;
-            alert(`You've requested to borrow: ${bookTitle}\nThis feature is coming soon!`);
+            
+            // Confirm reservation
+            if (confirm(`Do you want to reserve "${bookTitle}"?`)) {
+                // Make API call to reserve_book.php
+                fetch('reserve_book.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        book_id: bookId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Book reserved successfully! Please pick it up within 3 days once ready.');
+                        // Optionally refresh the page or update UI
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                });
+            }
         });
     });
     

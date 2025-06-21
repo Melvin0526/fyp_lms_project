@@ -118,6 +118,48 @@
     color: var(--danger-color);
 }
 
+.status-badge.status-reserved {
+    background-color: rgba(249, 199, 79, 0.1);
+    color: var(--warning-color);
+}
+
+.status-badge.status-ready_for_pickup {
+    background-color: rgba(63, 55, 201, 0.1);
+    color: var(--secondary-color);
+}
+
+.status-badge.status-borrowed {
+    background-color: rgba(76, 201, 240, 0.1);
+    color: var(--info-color);
+}
+
+.status-badge.status-returned {
+    background-color: rgba(9, 188, 138, 0.1);
+    color: var(--success-color);
+}
+
+.status-badge.status-cancelled {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--danger-color);
+}
+
+.status-badge.status-expired {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--danger-color);
+}
+
+.status-badge.status-overdue {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--danger-color, #e63946);
+    font-weight: 600;
+}
+
+.status-badge.status-returned-late {
+    background-color: rgba(230, 149, 57, 0.1);
+    color: var(--warning-color, #e69539);
+    font-weight: 600;
+}
+
 .type-badge {
     padding: 0.3rem 0.8rem;
     border-radius: 50px;
@@ -179,38 +221,13 @@
     color: var(--info-color);
 }
 
+.return-btn {
+    background-color: rgba(9, 188, 138, 0.1);
+    color: var(--success-color);
+}
+
 .action-btn:hover {
     opacity: 0.8;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
-    gap: 0.5rem;
-}
-
-.page-btn {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    border: 1px solid var(--light-grey);
-    background-color: var(--white);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.page-btn.active {
-    background-color: var(--primary-color);
-    color: var(--white);
-    border-color: var(--primary-color);
-}
-
-.page-btn:hover:not(.active) {
-    background-color: var(--light-grey);
 }
 
 .stats-cards {
@@ -253,4 +270,94 @@
 
 .completed-stat .stat-number {
     color: var(--success-color);
+}
+
+.main-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 1rem;
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Small loading spinner for buttons */
+.loading-spinner-sm {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.overdue-row {
+    background-color: rgba(230, 57, 70, 0.05);
+}
+
+.overdue-row:hover {
+    background-color: rgba(230, 57, 70, 0.1);
+}
+
+.returned-late-row {
+    background-color: rgba(230, 149, 57, 0.05);
+}
+
+.returned-late-row:hover {
+    background-color: rgba(230, 149, 57, 0.1);
+}
+
+/* Update your media queries for responsive design */
+
+/* For smaller screens, stack the table cells vertically */
+@media screen and (max-width: 768px) {
+    .request-table {
+        border: 0;
+    }
+    
+    .request-table thead {
+        display: none;
+    }
+    
+    .request-table tr {
+        margin-bottom: 10px;
+        display: block;
+        border: 1px solid #ddd;
+    }
+    
+    .request-table td {
+        display: block;
+        text-align: right;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .request-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+    }
+    
+    /* Make sure action buttons are centered */
+    .request-table td:last-child {
+        text-align: center;
+        padding-left: 0;
+    }
 }

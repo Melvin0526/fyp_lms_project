@@ -160,9 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span><?php echo htmlspecialchars($username); ?></span>                    
                     <div class="dropdown-content">
                         <a href="profile.php" class="active">My Profile</a>
-                        <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-                        <a href="admin_homepage.php">Admin Dashboard</a>
-                        <?php endif; ?>
                         <a href="logout.php">Logout</a>
                     </div>
                 </div>

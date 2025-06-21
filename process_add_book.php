@@ -8,96 +8,77 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || $_SESSION['
     exit();
 }
 
-// Check if the form was submitted
+// Include database connection
+include 'config.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Include database connection
-    include 'config.php';
+    // Get form data
+    $title = $_POST['title'] ?? '';
+    $author = $_POST['author'] ?? '';
+    $category_id = $_POST['category_id'] ?? null;
+    $summary = $_POST['summary'] ?? '';
+    $isbn = $_POST['isbn'] ?? '';
+    $total_copies = $_POST['total_copies'] ?? 1;
+    $available_copies = $_POST['available_copies'] ?? $total_copies;
     
-    // Get form data and sanitize input
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $author = mysqli_real_escape_string($conn, $_POST['author']);
-    $category_id = isset($_POST['category_id']) ? (int)$_POST['category_id'] : null;
-    $summary = isset($_POST['summary']) ? mysqli_real_escape_string($conn, $_POST['summary']) : null;
-    $isbn = isset($_POST['isbn']) ? mysqli_real_escape_string($conn, $_POST['isbn']) : null;
-    $total_copies = (int)$_POST['total_copies'];
-    $available_copies = (int)$_POST['available_copies'];
-    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    // Automatically determine status based on available copies
+    $status = ($available_copies > 0) ? 'available' : 'unavailable';
     
-    // Handle cover image upload if one was provided
-    $cover_image = null;
+    // Debug - check what we're receiving
+    error_log("Status from form: " . $status);
+    
+    // Handle cover image upload if any
+    $cover_image = "img/default-book-cover.png"; // Default image
+    
     if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "uploads/book_covers/";
+        $upload_dir = "uploads/book_covers/";
         
         // Create directory if it doesn't exist
-        if (!file_exists($target_dir)) {
-            mkdir($target_dir, 0777, true);
+        if (!file_exists($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
         }
         
         // Generate a unique filename
         $file_extension = pathinfo($_FILES['cover_image']['name'], PATHINFO_EXTENSION);
-        $unique_filename = uniqid('book_cover_') . '.' . $file_extension;
-        $target_file = $target_dir . $unique_filename;
+        $file_name = uniqid('book_') . "." . $file_extension;
+        $upload_path = $upload_dir . $file_name;
         
-        // Check if file is an actual image
-        $check = getimagesize($_FILES['cover_image']['tmp_name']);
-        if ($check === false) {
-            $error = "File is not an image.";
-        }
-        
-        // Check file size (limit to 5MB)
-        else if ($_FILES['cover_image']['size'] > 5000000) {
-            $error = "File is too large. Maximum size is 5MB.";
-        }
-        
-        // Check file type
-        else if (!in_array($file_extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            $error = "Only JPG, JPEG, PNG & GIF files are allowed.";
-        }
-        
-        // If all checks pass, try to upload the file
-        else if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $target_file)) {
-            $cover_image = $target_file;
+        // Move the uploaded file
+        if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $upload_path)) {
+            $cover_image = $upload_path;
         } else {
-            $error = "Error uploading file.";
+            $_SESSION['message'] = "Error uploading cover image.";
+            $_SESSION['message_type'] = "error";
+            header("Location: admin_book_management.php");
+            exit();
         }
     }
     
-    // If no errors, insert the book into the database
-    if (!isset($error)) {
-        $query = "INSERT INTO books (title, author, category_id, cover_image, summary, isbn, total_copies, available_copies, status) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssisssiii", $title, $author, $category_id, $cover_image, $summary, $isbn, $total_copies, $available_copies, $status);
+    // Insert book data into the database - ensure status field is included
+    $sql = "INSERT INTO books (title, author, category_id, summary, isbn, total_copies, available_copies, cover_image, status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($sql);
+    
+    if ($stmt) {
+        // Include status in the bind_param
+        $stmt->bind_param("ssissiiss", $title, $author, $category_id, $summary, $isbn, $total_copies, $available_copies, $cover_image, $status);
         
         if ($stmt->execute()) {
-            // Success - redirect to book management page
-            $success = true;
+            $_SESSION['message'] = "Book added successfully!";
+            $_SESSION['message_type'] = "success";
         } else {
-            // Error inserting record
-            $error = "Error adding book: " . $stmt->error;
+            $_SESSION['message'] = "Error adding book: " . $stmt->error;
+            $_SESSION['message_type'] = "error";
         }
         
         $stmt->close();
-    }
-    
-    // Close the database connection
-    $conn->close();
-    
-    // Redirect with success or error message
-    if (isset($success) && $success) {
-        $_SESSION['message'] = "Book added successfully.";
-        $_SESSION['message_type'] = "success";
     } else {
-        $_SESSION['message'] = $error;
+        $_SESSION['message'] = "Error preparing statement: " . $conn->error;
         $_SESSION['message_type'] = "error";
     }
     
-    header("Location: admin_book_management.php");
-    exit();
-}
-else {
-    // If accessed without form submission, redirect to book management page
+    $conn->close();
     header("Location: admin_book_management.php");
     exit();
 }

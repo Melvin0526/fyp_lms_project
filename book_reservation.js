@@ -1,5 +1,25 @@
 // JavaScript for the book reservation system
 document.addEventListener('DOMContentLoaded', function() {
+
+    // User dropdown menu functionality
+    const userInfo = document.querySelector('.user-info');
+    const dropdownContent = document.querySelector('.dropdown-content');
+    
+    // Add click listener to document
+    document.addEventListener('click', function(event) {
+        // If click is outside the user menu, close the dropdown
+        if (!userInfo.contains(event.target)) {
+            dropdownContent.style.display = 'none';
+        }
+    });
+    
+    // Toggle dropdown on user info click
+    userInfo.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const isDisplayed = dropdownContent.style.display === 'block';
+        dropdownContent.style.display = isDisplayed ? 'none' : 'block';
+    });
+    
     // Get elements - add clear filters button
     const bookModal = document.getElementById('book-modal');
     const confirmationModal = document.getElementById('confirmation-modal');
@@ -145,27 +165,36 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Display books
         booksToShow.forEach(book => {
+            // Double-check availability - ensure UI is consistent regardless of database state
+            const isBookAvailable = book.available_copies > 0 && book.status === 'available';
+            
             // Create availability badge class based on status
             let statusClass, statusText;
-            switch(book.status.toLowerCase()) {
-                case 'available':
-                    statusClass = 'available';
-                    statusText = 'Available';
-                    break;
-                case 'reserved':
-                    statusClass = 'reserved';
-                    statusText = 'Reserved';
-                    break;
-                case 'borrowed':
-                    statusClass = 'borrowed';
-                    statusText = 'Borrowed';
-                    break;
-                default:
-                    statusClass = 'unavailable';
-                    statusText = 'Unavailable';
+            if (book.available_copies <= 0) {
+                // Force unavailable status if no copies available
+                statusClass = 'unavailable';
+                statusText = 'Unavailable';
+            } else {
+                switch(book.status.toLowerCase()) {
+                    case 'available':
+                        statusClass = 'available';
+                        statusText = 'Available';
+                        break;
+                    case 'reserved':
+                        statusClass = 'reserved';
+                        statusText = 'Reserved';
+                        break;
+                    case 'borrowed':
+                        statusClass = 'borrowed';
+                        statusText = 'Borrowed';
+                        break;
+                    default:
+                        statusClass = 'unavailable';
+                        statusText = 'Unavailable';
+                }
             }
             
-            // Create book card HTML - removed icons from buttons
+            // Create book card HTML
             const bookCard = document.createElement('div');
             bookCard.className = 'book-card';
             bookCard.innerHTML = `
@@ -192,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="book-actions">
                         <button class="book-action-btn view-btn" data-id="${book.book_id}">View</button>
                         <button class="book-action-btn reserve-btn" data-id="${book.book_id}" 
-                            ${book.available_copies < 1 || book.status !== 'available' ? 'disabled' : ''}>
+                            ${!isBookAvailable ? 'disabled' : ''}>
                             Reserve
                         </button>
                     </div>
@@ -337,11 +366,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to show book details modal
     function showBookDetails(bookId) {
-        // Here you'd normally fetch the book details from the server
-        // For now, we'll use a placeholder and find the book in our existing data
         const book = allBooks.find(b => b.book_id == bookId);
         
         if (book) {
+            // Double-check availability
+            const isBookAvailable = book.available_copies > 0 && book.status === 'available';
+            
+            // Determine status text and class
+            let statusClass = book.status;
+            let statusText = book.status.charAt(0).toUpperCase() + book.status.slice(1);
+            
+            // Force unavailable if no copies
+            if (book.available_copies <= 0) {
+                statusClass = 'unavailable';
+                statusText = 'Unavailable';
+            }
+            
             const detailContent = document.getElementById('book-detail-content');
             
             // Create modal content
@@ -357,10 +397,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="book-isbn">ISBN: ${book.isbn || 'N/A'}</p>
                         <p class="book-description">${book.summary || 'No description available.'}</p>
                         <div class="book-availability">
-                            <p><span class="status-text ${book.status}">${book.status.charAt(0).toUpperCase() + book.status.slice(1)}</span></p>
+                            <p><span class="status-text ${statusClass}">${statusText}</span></p>
                             <p>${book.available_copies} of ${book.total_copies} copies available</p>
                         </div>
-                        ${book.available_copies > 0 && book.status === 'available' ? 
+                        ${isBookAvailable ? 
                             `<button class="reserve-now-btn" data-id="${book.book_id}">Reserve Now</button>` : 
                             '<p>This book is currently not available for reservation.</p>'}
                     </div>
@@ -401,9 +441,47 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add new event listener
             newConfirmBtn.addEventListener('click', function() {
-                // Here you'd normally send a reservation request to the server
-                alert(`Book reservation functionality will be implemented in future updates. Book ID: ${bookId}`);
-                confirmationModal.style.display = 'none';
+                // Show loading state
+                newConfirmBtn.disabled = true;
+                newConfirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Send a reservation request to the server
+                fetch('reserve_book.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ book_id: bookId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    confirmationModal.style.display = 'none';
+                    
+                    if (data.success) {
+                        // Show success message
+                        showNotification('success', `${data.book_title} has been reserved successfully! You have 3 days to pick up your book from the library.`);
+                        
+                        // Refresh book list to update availability
+                        loadBooks();
+                        
+                        // Refresh user's reservations if they're displayed on the page
+                        if (typeof loadUserReservations === 'function') {
+                            loadUserReservations();
+                        }
+                    } else {
+                        // Show error message
+                        showNotification('error', data.message || 'Failed to reserve book. Please try again.');
+                        
+                        // If it's a duplicate reservation, reload to reflect the current status
+                        if (data.message && data.message.includes("You already have this book")) {
+                            loadBooks();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error reserving book:', error);
+                    showNotification('error', 'Failed to reserve book. Please try again.');
+                });
             });
             
             // Same for cancel button
@@ -418,6 +496,55 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show modal
             confirmationModal.style.display = 'block';
         }
+    }
+    
+    // Add this function near the top of your JavaScript file:
+    function showNotification(type, message) {
+        // Remove any existing notifications
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span>${message}</span>
+            </div>
+            <button class="close-notification"><i class="fas fa-times"></i></button>
+        `;
+        
+        // Add to DOM
+        document.body.appendChild(notification);
+        
+        // Show with animation
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // Add close button functionality
+        const closeBtn = notification.querySelector('.close-notification');
+        closeBtn.addEventListener('click', () => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        });
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        notification.remove();
+                    }
+                }, 300);
+            }
+        }, 5000);
     }
     
     // Helper function to toggle loading spinner

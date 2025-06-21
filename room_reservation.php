@@ -75,10 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reserve'])) {
                     <span><?php echo htmlspecialchars($username); ?></span>
                     <div class="dropdown-content">
                         <a href="profile.php">My Profile</a>
-                        <a href="change_password.php">Change Password</a>
-                        <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-                        <a href="admin_homepage.php">Admin Dashboard</a>
-                        <?php endif; ?>
                         <a href="logout.php">Logout</a>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const isDisplayed = dropdownContent.style.display === 'block';
         dropdownContent.style.display = isDisplayed ? 'none' : 'block';
     });
-    
+
     // Fade out notifications after 5 seconds
     const notifications = document.querySelectorAll('.success-message, .error-message');
     if (notifications.length > 0) {

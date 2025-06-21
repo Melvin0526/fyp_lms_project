@@ -88,7 +88,7 @@ if (isset($conn)) {
                         </a>
                     </li>
                     <li>
-                        <a href="admin_request.php">
+                        <a href="admin_requests.php">
                             <span class="icon"><i class="fas fa-exchange-alt"></i></span>
                             <span class="text">Book Reservation</span>
                         </a>

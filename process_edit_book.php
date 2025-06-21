@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $isbn = isset($_POST['isbn']) ? mysqli_real_escape_string($conn, $_POST['isbn']) : null;
     $total_copies = (int)$_POST['total_copies'];
     $available_copies = (int)$_POST['available_copies'];
-    $status = mysqli_real_escape_string($conn, $_POST['status']);
+    $status = ($available_copies > 0) ? 'available' : 'unavailable';
     
     // Debug: Log the data we're trying to update
     error_log("Updating book ID: $book_id with title: $title, author: $author, category: $category_id");

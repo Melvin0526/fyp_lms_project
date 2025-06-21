@@ -22,6 +22,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="borrow_history.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -43,10 +44,6 @@ $email = $_SESSION['email'];
                     <span><?php echo htmlspecialchars($username); ?></span>
                     <div class="dropdown-content">
                         <a href="profile.php">My Profile</a>
-                        <a href="change_password.php">Change Password</a>
-                        <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
-                        <a href="admin_homepage.php">Admin Dashboard</a>
-                        <?php endif; ?>
                         <a href="logout.php">Logout</a>
                     </div>
                 </div>
@@ -54,11 +51,42 @@ $email = $_SESSION['email'];
         </header>
 
         <main>
-            <section class="page-header">
-                <h2>My Borrowing History</h2>
-                <p>Track your current and past borrowings</p>
-            </section>
-
+            <div class="page-header">
+                <h2>My Books</h2>
+                <p>View your current reservations and borrowing history</p>
+            </div>
+            
+            <div class="tabs-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" data-tab="current-tab">Current Reservations</button>
+                    <button class="tab-btn" data-tab="past-tab">Past Borrowings</button>
+                </div>
+                
+                <div id="current-tab" class="tab-pane active">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div id="past-tab" class="tab-pane">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Confirmation Modal for Cancellation -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <!-- Content will be dynamically updated -->
+        </div>
+    </div>
+    
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast">
+        <div class="toast-content">
+            <span class="toast-message"></span>
+            <button class="toast-close">&times;</button>
+        </div>
+    </div>
 
     <script src="borrow_history.js"></script>
 </body>
