@@ -23,6 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: forgot_password.php?error=invalid_request");
         exit();
     }
+
+    // Validate password length
+    if (strlen($password) < 8) {
+        header("Location: reset_password.php?error=password_too_short");
+        exit();
+    }
     
     // Validate password confirmation
     if ($password !== $confirm_password) {

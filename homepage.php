@@ -35,7 +35,7 @@ $user_preferences = [];
 $preferences_query = "SELECT p.category_id, c.name as category_name 
                      FROM user_preferences p
                      JOIN categories c ON p.category_id = c.category_id
-                     WHERE p.user_id = ?";
+                     WHERE p.id = ?";
 $stmt = $conn->prepare($preferences_query);
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
@@ -136,7 +136,22 @@ while ($row = $authors_result->fetch_assoc()) {
     }
 }
 
-// If user has borrow history, use both categories and authors for recommendations
+// Combine history categories with user preferences if we don't have enough history categories
+if (count($history_categories) < 3 && !empty($user_preferences)) {
+    $pref_categories = array_column($user_preferences, 'category_id');
+    
+    // Add preference categories that aren't already in history categories
+    foreach ($pref_categories as $cat_id) {
+        if (!in_array($cat_id, $history_categories) && count($history_categories) < 3) {
+            $history_categories[] = $cat_id;
+        }
+    }
+    $recommendation_source = 'combined';
+} else if (!empty($history_categories)) {
+    $recommendation_source = 'history';
+}
+
+// If user has categories (from history or preferences) or favorite authors, use them for recommendations
 if (!empty($history_categories) || !empty($favorite_authors)) {
     $conditions = [];
     $params = [];
@@ -156,11 +171,13 @@ if (!empty($history_categories) || !empty($favorite_authors)) {
     
     $where_clause = implode(' OR ', $conditions);
     
+    // CASE statement for determining match type
+    $case_when = !empty($favorite_authors) ? 
+        "CASE WHEN b.author IN (" . implode(',', array_fill(0, count($favorite_authors), '?')) . ") THEN 'author' ELSE 'category' END" :
+        "'category'";
+    
     $recommended_sql = "SELECT b.*, c.name AS category_name,
-                        CASE
-                            WHEN b.author IN (" . implode(',', array_fill(0, count($favorite_authors), '?')) . ") THEN 'author'
-                            ELSE 'category'
-                        END as match_type
+                        $case_when as match_type
                       FROM books b
                       LEFT JOIN categories c ON b.category_id = c.category_id
                       WHERE b.status = 'available' 
@@ -169,12 +186,16 @@ if (!empty($history_categories) || !empty($favorite_authors)) {
                       AND b.book_id NOT IN (
                           SELECT book_id FROM book_loans WHERE id = ?
                       )
-                      ORDER BY match_type, RAND()
+                      ORDER BY " . (!empty($favorite_authors) ? "match_type, " : "") . "RAND()
                       LIMIT 4";
     
-    // Add user_id to parameters
-    $params = array_merge($params, $favorite_authors, [$user_id]);
-    $types .= str_repeat('s', count($favorite_authors)) . 'i';
+    // Add parameters
+    if (!empty($favorite_authors)) {
+        $params = array_merge($params, $favorite_authors);
+        $types .= str_repeat('s', count($favorite_authors));
+    }
+    $params[] = $user_id;
+    $types .= 'i';
     
     $stmt = $conn->prepare($recommended_sql);
     
@@ -198,11 +219,10 @@ if (!empty($history_categories) || !empty($favorite_authors)) {
             $book['recommendation_type'] = $book['match_type'];
             $recommended_books[] = $book;
         }
-        $recommendation_source = 'combined';
     }
 }
 
-// If no recommendations from history or not enough books, use preferences
+// If no recommendations yet or not enough books, use preferences
 if (empty($recommended_books) && !empty($user_preferences)) {
     $preference_ids = array_column($user_preferences, 'category_id');
     $preference_ids_str = implode(',', $preference_ids);
@@ -223,6 +243,7 @@ if (empty($recommended_books) && !empty($user_preferences)) {
             if (empty($book['cover_image'])) {
                 $book['cover_image'] = 'img/default-book-cover.png';
             }
+            $book['recommendation_type'] = 'preference';
             $recommended_books[] = $book;
         }
         $recommendation_source = 'preferences';
@@ -255,8 +276,7 @@ if (empty($recommended_books) && !empty($user_preferences)) {
                     <li><a href="book_reservation.php">Browse Book</a></li>
                     <li><a href="borrow_history.php">Borrow History</a></li>
                     <li><a href="room_reservation.php">Room Reservation</a></li>
-                    <li><a href="reservation_history.php">Reservation History</a></li>
-                    <li><a href="wishlist.php">My Wishlist </a></li>         
+                    <li><a href="reservation_history.php">Reservation History</a></li>        
                 </ul>
             </nav>
             <div class="user-menu">

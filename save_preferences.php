@@ -40,14 +40,14 @@ try {
     $conn->begin_transaction();
     
     // Delete existing preferences for this user
-    $delete_query = "DELETE FROM user_preferences WHERE user_id = ?";
+    $delete_query = "DELETE FROM user_preferences WHERE id = ?";
     $stmt = $conn->prepare($delete_query);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
     
     // Insert new preferences
     if (!empty($selected_categories)) {
-        $insert_query = "INSERT INTO user_preferences (user_id, category_id) VALUES (?, ?)";
+        $insert_query = "INSERT INTO user_preferences (id, category_id) VALUES (?, ?)";
         $stmt = $conn->prepare($insert_query);
         
         foreach ($selected_categories as $category_id) {

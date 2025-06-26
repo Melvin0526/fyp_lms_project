@@ -93,14 +93,8 @@ try {
     
     $loan_id = $stmt->insert_id;
     
-    // Update book available copies and status
-    $updateBookQuery = "UPDATE books 
-                       SET available_copies = available_copies - 1,
-                           status = CASE WHEN available_copies - 1 <= 0 THEN 'unavailable' ELSE status END
-                       WHERE book_id = ?";
-    $stmt = $conn->prepare($updateBookQuery);
-    $stmt->bind_param('i', $book_id);
-    $stmt->execute();
+    // REMOVED: No longer update available copies at reservation time
+    // Will only update when status changes to ready_for_pickup
     
     // Commit transaction
     $conn->commit();

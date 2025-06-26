@@ -180,14 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         statusClass = 'available';
                         statusText = 'Available';
                         break;
-                    case 'reserved':
-                        statusClass = 'reserved';
-                        statusText = 'Reserved';
-                        break;
-                    case 'borrowed':
-                        statusClass = 'borrowed';
-                        statusText = 'Borrowed';
-                        break;
                     default:
                         statusClass = 'unavailable';
                         statusText = 'Unavailable';

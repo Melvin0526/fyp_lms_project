@@ -102,9 +102,8 @@ $conn->close();
                         <label class="filter-label" for="availability-filter">Availability</label>
                         <select id="availability-filter" class="filter-select">
                             <option value="">All Status</option>
-                            <option value="available">Available Now</option>
-                            <option value="reserved">Reserved</option>
-                            <option value="borrowed">Borrowed</option>
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
                         </select>
                     </div>
                 </div>

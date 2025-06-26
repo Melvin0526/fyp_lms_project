@@ -143,9 +143,9 @@ if ($result && $result->num_rows > 0) {
         <main class="main-content">
             <header class="main-header">
                 <div class="header-user">
-                    <span class="username"><?php echo htmlspecialchars($admin_username); ?></span>
-                    <div class="user-avatar">
-                        <i class="fas fa-user-circle"></i>
+                    <div class="user-profile">
+                        <span class="user-name"><?php echo htmlspecialchars($admin_username); ?></span>
+                        <span class="user-role">Administrator</span>
                     </div>
                 </div>
             </header>

@@ -29,9 +29,14 @@ if (!empty($category)) {
 
 // Add availability filter
 if (!empty($availability)) {
-    $query .= " AND b.status = ?";
-    $params[] = $availability;
-    $types .= "s";
+    switch ($availability) {
+        case 'available':
+            $query .= " AND b.available_copies > 0 AND b.status = 'available'";
+            break;
+        case 'unavailable':
+            $query .= " AND (b.available_copies <= 0 OR b.status != 'available')";
+            break;
+    }
 }
 
 // Add search filter (title, author, or ISBN)

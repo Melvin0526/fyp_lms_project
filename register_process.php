@@ -26,6 +26,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode($response);
         exit();
     }
+
+    // Validate password length
+    if (strlen($password) < 8) {
+        $response['status'] = 'error';
+        $response['message'] = 'Password must be at least 8 characters long.';
+        echo json_encode($response);
+        exit();
+    }
     
     // Check if username already exists
     $check_username = $conn->query("SELECT * FROM users WHERE username = '$username'");

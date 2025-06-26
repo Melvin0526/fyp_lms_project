@@ -33,6 +33,8 @@ $email = $_SESSION['reset_email'];
                 <?php 
                     if($_GET['error'] == 'password_mismatch') {
                         echo 'Passwords do not match. Please try again.';
+                    } elseif($_GET['error'] == 'password_too_short') {
+                        echo 'Password must be at least 8 characters long.';
                     } elseif($_GET['error'] == 'system_error') {
                         echo 'System error. Please try again later.';
                     }

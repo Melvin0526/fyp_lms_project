@@ -114,9 +114,9 @@ if (isset($conn)) {
         <main class="main-content">
             <header class="main-header">
                 <div class="header-user">
-                    <span class="username"><?php echo htmlspecialchars($admin_username); ?></span>
-                    <div class="user-avatar">
-                        <i class="fas fa-user-circle"></i>
+                    <div class="user-profile">
+                        <span class="user-name"><?php echo htmlspecialchars($admin_username); ?></span>
+                        <span class="user-role">Administrator</span>
                     </div>
                 </div>
             </header>
@@ -141,7 +141,6 @@ if (isset($conn)) {
                     <div class="tabs">
                         <div class="tab active" data-tab="books-tab">Books</div>
                         <div class="tab" data-tab="categories-tab">Categories</div>
-                        <div class="tab" data-tab="borrowing-tab">Borrowing</div>
                     </div>
                     
                     <!-- Books Tab -->
@@ -278,33 +277,6 @@ if (isset($conn)) {
                         <?php else: ?>
                             <p class="no-data-message">No categories found. Add a new category to get started.</p>
                         <?php endif; ?>
-                    </div>
-                    
-                    <!-- Borrowing Tab -->
-                    <div class="tab-content" id="borrowing-tab">
-                        <div class="book-filters">
-                            <div class="filter-container">
-                                <div class="filter-group">
-                                    <span>Filter by status:</span>
-                                    <select class="filter-select">
-                                        <option value="">All Status</option>
-                                        <option value="borrowed">Borrowed</option>
-                                        <option value="returned">Returned</option>
-                                        <option value="overdue">Overdue</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="filter-group">
-                                    <span>Search user:</span>
-                                    <input type="text" class="book-search-input" placeholder="Enter username...">
-                                </div>
-                            </div>
-                            
-                            <button type="button" class="filter-btn btn-primary">Apply</button>
-                        </div>
-                        
-                        <!-- Empty borrowing tab content -->
-                        <p class="no-data-message">No borrowing records found.</p>
                     </div>
                 </div>
             </div>

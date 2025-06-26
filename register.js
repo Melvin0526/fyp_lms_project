@@ -93,11 +93,27 @@ emailInput.addEventListener('input', function() {
 // Live validation for phone number
 phoneInput.addEventListener('input', function() {
   // Basic phone validation (can be adjusted for different formats)
-  const phoneRegex = /^[0-9\-\+\(\)\s]{6,20}$/;
+  const phoneRegex = /^[0-9\-\+\(\)\s]{9,12}$/;
   if (this.value.length > 0) {
     if (!phoneRegex.test(this.value)) {
       this.style.borderColor = '#dc3545';
       this.setCustomValidity('Please enter a valid phone number');
+    } else {
+      this.style.borderColor = '#28a745';
+      this.setCustomValidity('');
+    }
+  } else {
+    this.style.borderColor = '';
+    this.setCustomValidity('');
+  }
+});
+
+// Live validation for password length
+password.addEventListener('input', function() {
+  if (this.value.length > 0) {
+    if (this.value.length < 8) {
+      this.style.borderColor = '#dc3545';
+      this.setCustomValidity('Password must be at least 8 characters');
     } else {
       this.style.borderColor = '#28a745';
       this.setCustomValidity('');

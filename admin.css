@@ -312,49 +312,22 @@ body {
     background-color: var(--white);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* This ensures content is spaced to edges */
     padding: 0 2rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     z-index: 50;
 }
 
-.header-search {
-    position: relative;
-    width: 300px;
-}
-
-.search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%236c757d"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-
-.header-search input {
-    width: 100%;
-    padding: 0.5rem 0.5rem 0.5rem 2.2rem;
-    border: 1px solid var(--light-grey);
-    border-radius: 5px;
-    font-size: 0.9rem;
-    font-family: 'Poppins', sans-serif;
-    transition: var(--transition);
-}
-
-.header-search input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
-}
-
 .header-user {
     display: flex;
     align-items: center;
+    /* No left/right properties so it respects the flex parent's justify-content */
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* This aligns text to the right */
 }
 
 .notification-bell {

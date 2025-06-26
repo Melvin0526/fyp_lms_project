@@ -15,11 +15,11 @@ include 'config.php';
 $user_id = $_SESSION['user_id'];
 
 try {
-    // Get user preferences
+    // Get user preferences - updated field names
     $query = "SELECT p.category_id, c.name as category_name 
               FROM user_preferences p
               JOIN categories c ON p.category_id = c.category_id
-              WHERE p.user_id = ?";
+              WHERE p.id = ?";  
               
     $stmt = $conn->prepare($query);
     $stmt->bind_param('i', $user_id);

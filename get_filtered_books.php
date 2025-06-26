@@ -33,10 +33,18 @@ try {
         $types .= "i";
     }
     
-    // Add search filter
+    // Add search filter - modified to ignore spaces
     if (!empty($search)) {
-        $query .= " AND (b.title LIKE ? OR b.author LIKE ? OR b.isbn LIKE ?)";
-        $search_param = "%{$search}%";
+        // Remove all spaces from search term
+        $searchWithoutSpaces = str_replace(' ', '', $search);
+        
+        $query .= " AND (
+                    REPLACE(b.title, ' ', '') LIKE ? OR 
+                    REPLACE(b.author, ' ', '') LIKE ? OR 
+                    REPLACE(b.isbn, ' ', '') LIKE ?
+                    )";
+        
+        $search_param = "%{$searchWithoutSpaces}%";
         $params[] = $search_param;
         $params[] = $search_param;
         $params[] = $search_param;
