@@ -32,7 +32,7 @@ if ($result && $result->num_rows > 0) {
 }
 
 // Query to get categories
-$categoryQuery = "SELECT * FROM categories WHERE status = 'active' ORDER BY name ASC";
+$categoryQuery = "SELECT * FROM categories ORDER BY name ASC";
 $categoryResult = $conn->query($categoryQuery);
 
 if ($categoryResult && $categoryResult->num_rows > 0) {

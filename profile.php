@@ -103,8 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (password_verify($currentPassword, $hashedPassword)) {
                 // Check if new passwords match
                 if ($newPassword === $confirmPassword) {
-                    if (strlen($newPassword) < 6) {
-                        $error_message = "Password must be at least 6 characters long.";
+                    if (strlen($newPassword) < 8) {
+                        $error_message = "Password must be at least 8 characters long.";
                     } else {
                         // Hash new password and update
                         $hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -205,16 +205,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form action="profile.php" method="post">
                             <div class="form-group">
                                 <label for="current_password">Current Password</label>
-                                <input type="password" id="current_password" name="current_password" required>
+                                <input type="text" id="current_password" name="current_password" required>
                             </div>
                             <div class="form-group">
                                 <label for="new_password">New Password</label>
-                                <input type="password" id="new_password" name="new_password" required>
-                                <small>Password must be at least 6 characters</small>
+                                <input type="text" id="new_password" name="new_password" required>
+                                <small>Password must be at least 8 characters</small>
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password">Confirm New Password</label>
-                                <input type="password" id="confirm_password" name="confirm_password" required>
+                                <input type="text" id="confirm_password" name="confirm_password" required>
                             </div>
                             <div class="form-actions">
                                 <button type="submit" name="change_password" class="btn primary">Change Password</button>

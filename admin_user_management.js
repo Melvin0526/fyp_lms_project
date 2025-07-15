@@ -212,9 +212,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addUserForm) {
         addUserForm.addEventListener('submit', function(event) {
             const password = document.getElementById('password').value;
-            if (password.length < 6) {
+            if (password.length < 8) {
                 event.preventDefault();
-                alert('Password must be at least 6 characters long.');
+                alert('Password must be at least 8 characters long.');
             }
         });
     }
@@ -223,9 +223,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (editUserForm) {
         editUserForm.addEventListener('submit', function(event) {
             const password = document.getElementById('edit-password').value;
-            if (password && password.length < 6) {
+            if (password && password.length < 8) {
                 event.preventDefault();
-                alert('Password must be at least 6 characters long.');
+                alert('Password must be at least 8 characters long.');
             }
         });
     }

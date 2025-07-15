@@ -331,12 +331,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Form validation for book form
+    // Form validation for book form with improved copies validation
     const bookForm = document.getElementById('add-book-form');
     if (bookForm) {
         bookForm.addEventListener('submit', function(e) {
             const title = document.getElementById('title').value.trim();
             const author = document.getElementById('author').value.trim();
             const category = document.getElementById('category').value;
+            const totalCopies = parseInt(document.getElementById('total_copies').value);
+            const availableCopies = parseInt(document.getElementById('available_copies').value);
             
             let isValid = true;
             let errorMessage = '';
@@ -356,6 +359,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 isValid = false;
             }
             
+            // Add validation for copies relationship
+            if (availableCopies > totalCopies) {
+                errorMessage += "Available copies cannot exceed total copies.\n";
+                isValid = false;
+            }
+            
             if (!isValid) {
                 e.preventDefault();
                 alert("Please correct the following errors:\n" + errorMessage);
@@ -363,13 +372,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Form validation for edit book form
+    // Form validation for edit book form with improved copies validation
     const editBookForm = document.getElementById('edit-book-form');
     if (editBookForm) {
         editBookForm.addEventListener('submit', function(e) {
             const title = document.getElementById('edit-title').value.trim();
             const author = document.getElementById('edit-author').value.trim();
             const category = document.getElementById('edit-category').value;
+            const totalCopies = parseInt(document.getElementById('edit-total-copies').value);
+            const availableCopies = parseInt(document.getElementById('edit-available-copies').value);
             
             let isValid = true;
             let errorMessage = '';
@@ -389,6 +400,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 isValid = false;
             }
             
+            // Add validation for copies relationship
+            if (availableCopies > totalCopies) {
+                errorMessage += "Available copies cannot exceed total copies.\n";
+                isValid = false;
+            }
+            
             if (!isValid) {
                 e.preventDefault();
                 alert("Please correct the following errors:\n" + errorMessage);
@@ -396,31 +413,84 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Link available copies to total copies
+    // Improve the total copies input validation for both add and edit forms
+    // to update available copies max in real-time
     const totalCopiesInput = document.getElementById('total_copies');
     const availableCopiesInput = document.getElementById('available_copies');
     
     if (totalCopiesInput && availableCopiesInput) {
-        totalCopiesInput.addEventListener('change', function() {
+        ['input', 'change'].forEach(eventType => {
+            totalCopiesInput.addEventListener(eventType, function() {
+                const totalCopies = parseInt(this.value) || 0;
+                const availableCopies = parseInt(availableCopiesInput.value) || 0;
+                
+                // Ensure total copies is at least 1
+                if (totalCopies < 1) {
+                    this.value = 1;
+                }
+                
+                // Ensure available copies doesn't exceed total copies
+                if (availableCopies > totalCopies) {
+                    availableCopiesInput.value = totalCopies;
+                }
+                availableCopiesInput.max = totalCopies;
+            });
+        });
+        
+        // Also validate available copies on input
+        availableCopiesInput.addEventListener('input', function() {
+            const totalCopies = parseInt(totalCopiesInput.value) || 0;
+            const availableCopies = parseInt(this.value) || 0;
+            
             // Ensure available copies doesn't exceed total copies
-            if (parseInt(availableCopiesInput.value) > parseInt(totalCopiesInput.value)) {
-                availableCopiesInput.value = totalCopiesInput.value;
+            if (availableCopies > totalCopies) {
+                this.value = totalCopies;
             }
-            availableCopiesInput.max = totalCopiesInput.value;
+            
+            // Ensure available copies is not negative
+            if (availableCopies < 0) {
+                this.value = 0;
+            }
         });
     }
     
-    // Also link available copies for edit form
+    // Also link available copies for edit form with improved validation
     const editTotalCopiesInput = document.getElementById('edit-total-copies');
     const editAvailableCopiesInput = document.getElementById('edit-available-copies');
     
     if (editTotalCopiesInput && editAvailableCopiesInput) {
-        editTotalCopiesInput.addEventListener('change', function() {
+        ['input', 'change'].forEach(eventType => {
+            editTotalCopiesInput.addEventListener(eventType, function() {
+                const totalCopies = parseInt(this.value) || 0;
+                const availableCopies = parseInt(editAvailableCopiesInput.value) || 0;
+                
+                // Ensure total copies is at least 1
+                if (totalCopies < 1) {
+                    this.value = 1;
+                }
+                
+                // Ensure available copies doesn't exceed total copies
+                if (availableCopies > totalCopies) {
+                    editAvailableCopiesInput.value = totalCopies;
+                }
+                editAvailableCopiesInput.max = totalCopies;
+            });
+        });
+        
+        // Also validate available copies on input
+        editAvailableCopiesInput.addEventListener('input', function() {
+            const totalCopies = parseInt(editTotalCopiesInput.value) || 0;
+            const availableCopies = parseInt(this.value) || 0;
+            
             // Ensure available copies doesn't exceed total copies
-            if (parseInt(editAvailableCopiesInput.value) > parseInt(editTotalCopiesInput.value)) {
-                editAvailableCopiesInput.value = editTotalCopiesInput.value;
+            if (availableCopies > totalCopies) {
+                this.value = totalCopies;
             }
-            editAvailableCopiesInput.max = editTotalCopiesInput.value;
+            
+            // Ensure available copies is not negative
+            if (availableCopies < 0) {
+                this.value = 0;
+            }
         });
     }
     

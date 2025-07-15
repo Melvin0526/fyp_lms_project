@@ -415,7 +415,7 @@ $conn->close();
                     
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="text" id="password" name="password" required>
                     </div>
                     
                     <div class="form-group">
@@ -427,9 +427,6 @@ $conn->close();
                         <label for="usertype">Role</label>
                         <select id="usertype" name="usertype" required>
                             <option value="user">User</option>
-                            <option value="student">Student</option>
-                            <option value="faculty">Faculty</option>
-                            <option value="staff">Staff</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
@@ -470,7 +467,7 @@ $conn->close();
                     
                     <div class="form-group">
                         <label for="edit-password">Password (leave empty to keep current)</label>
-                        <input type="password" id="edit-password" name="password">
+                        <input type="text" id="edit-password" name="password">
                     </div>
                     
                     <div class="form-group">
@@ -482,9 +479,6 @@ $conn->close();
                         <label for="edit-usertype">Role</label>
                         <select id="edit-usertype" name="usertype" required>
                             <option value="user">User</option>
-                            <option value="student">Student</option>
-                            <option value="faculty">Faculty</option>
-                            <option value="staff">Staff</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>

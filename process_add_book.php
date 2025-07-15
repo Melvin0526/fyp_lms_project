@@ -24,8 +24,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Automatically determine status based on available copies
     $status = ($available_copies > 0) ? 'available' : 'unavailable';
     
-    // Debug - check what we're receiving
-    error_log("Status from form: " . $status);
+    // Check for duplicate books (same title and author)
+    $check_duplicate = "SELECT book_id, title FROM books WHERE title = ? AND author = ?";
+    $stmt_check = $conn->prepare($check_duplicate);
+    $stmt_check->bind_param("ss", $title, $author);
+    $stmt_check->execute();
+    $duplicate_result = $stmt_check->get_result();
+    
+    if ($duplicate_result->num_rows > 0) {
+        $existing_book = $duplicate_result->fetch_assoc();
+        $_SESSION['message'] = "Error: A book with the same title and author already exists (Book ID: {$existing_book['book_id']}). You cannot add duplicate books.";
+        $_SESSION['message_type'] = "error";
+        $conn->close();
+        header("Location: admin_book_management.php");
+        exit();
+    }
     
     // Handle cover image upload if any
     $cover_image = "img/default-book-cover.png"; // Default image

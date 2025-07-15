@@ -161,16 +161,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add confirmation for cancel buttons
-    const cancelButtons = document.querySelectorAll('.cancel-btn');
-    cancelButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            if (!confirm('Are you sure you want to cancel this reservation?')) {
-                e.preventDefault();
-            }
-        });
-    });
-    
     // Room edit functionality
     const editRoomModal = document.getElementById('edit-room-modal');
     const editButtons = document.querySelectorAll('.edit-btn');

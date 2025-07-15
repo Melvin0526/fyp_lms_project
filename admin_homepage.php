@@ -161,7 +161,7 @@ $activity_query = "SELECT
                     DATE_FORMAT(reserved_at, '%b %d') as day,
                     COUNT(*) as total_loans
                   FROM book_loans
-                  WHERE reserved_at >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
+                  WHERE reserved_at >= DATE_SUB(CURRENT_DATE(), INTERVAL 29 DAY)
                   GROUP BY DATE(reserved_at)
                   ORDER BY DATE(reserved_at)";
 $activity_result = $conn->query($activity_query);
@@ -174,7 +174,7 @@ if ($activity_result) {
 }
 
 // If no data or limited data, add some sample data for demo purposes
-if (count($activity_data) < 3) {
+/*if (count($activity_data) < 3) {
     // Get the current date and create some sample data for the past 14 days
     $current_date = new DateTime();
     for ($i = 14; $i >= 0; $i--) {
@@ -191,6 +191,7 @@ if (count($activity_data) < 3) {
     // Sort by date
     ksort($activity_data);
 }
+*/
 
 // 2. Book categories distribution
 $categories_query = "SELECT 
